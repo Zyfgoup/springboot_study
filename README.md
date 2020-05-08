@@ -1,10 +1,7 @@
 # springboot_CRUD
 Springboot整合Mybaits、thymeleaf实现CRUD
 
-
-#sql
-
-/*
+```/*
 Navicat MySQL Data Transfer
 
 Source Server         : localhost_3306
@@ -81,5 +78,3 @@ CREATE TABLE `user` (
 -- Records of user
 -- ----------------------------
 INSERT INTO `user` VALUES ('1', 'admin', '123456');
-
-
