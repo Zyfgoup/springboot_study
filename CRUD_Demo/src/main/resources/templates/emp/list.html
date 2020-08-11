@@ -9,10 +9,7 @@
 		<meta name="author" content="">
 
 		<title>Dashboard Template for Bootstrap</title>
-		<!-- Bootstrap core CSS -->
 		<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
-
-		<!-- Custom styles for this template -->
 		<link th:href="@{/css/dashboard.css}" rel="stylesheet">
 		<style type="text/css">
 			
@@ -51,7 +48,71 @@
 				<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
 					<h2>员工管理</h2>
 					<!--添加员工按钮-->
-					<a class="btn btn-sm btn-primary" th:href="@{/add}">添加</a>
+					<!-- 按钮触发模态框 -->
+					<button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal" id="add">
+						添加员工
+					</button>
+					<!-- 模态框（Modal） -->
+					<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+										&times;
+									</button>
+									<h5 class="modal-title" id="myModalLabel">
+									员工信息
+									</h5>
+								</div>
+								<div class="modal-body">
+									<form  id="addform">
+										<div class="form-group">
+											<label for="InputName">姓名</label>
+											<input name="employeeName" type="text" class="form-control" id="InputName" placeholder="张三" >
+
+										</div>
+										<div class="form-group">
+											<label for="InputEmail1">邮箱</label>
+											<input name="email" type="email" class="form-control" id="InputEmail1" placeholder="123@123.com">
+										</div>
+										<div class="form-group">
+											<label >性别</label>
+											<div class="form-check form-check-inline" >
+												<input class="form-check-input" type="radio" name="gender"  value="1">
+												<label class="form-check-label">男</label>
+											</div>
+											<div class="form-check form-check-inline" >
+												<input class="form-check-input" type="radio" name="gender"  value="0">
+												<label class="form-check-label">女</label>
+											</div>
+										</div>
+										<div class="form-group">
+											<label>部门</label>
+											<!--提交的是部门的ID-->
+											<select class="form-control" name="departmentId" id="selectDep">
+												<option>请选择</option>
+
+											</select>
+										</div>
+										<div class="form-group">
+											<label>入职日期</label>
+											<input name="date" type="text"  class="form-control" id="dateFormat" autocomplete="off">
+										</div>
+
+									</form>
+
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+										</button>
+										<button type="button" class="btn btn-primary" id="addButton" >
+											添加
+										</button>
+									</div>
+								</div>
+
+							</div><!-- /.modal-content -->
+						</div><!-- /.modal -->
+					</div>
 
 					<div class="table-responsive">
 						<table class="table table-striped table-sm">
@@ -88,12 +149,81 @@
 				</main>
 			</div>
 		</div>
+
+
+
 		<!-- Bootstrap core JavaScript
     ================================================== -->
 		<!-- Placed at the end of the document so the pages load faster -->
-		<script type="text/javascript" src="asserts/js/jquery-3.2.1.slim.min.js"></script>
-		<script type="text/javascript" src="asserts/js/popper.min.js"></script>
-		<script type="text/javascript" src="asserts/js/bootstrap.min.js"></script>
+		<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<!--		JQuery要放在bootstrap的js前面-->
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+		<!--  引入serializejson.js，将表单中的值序列化并转化为json对象  -->
+		<script src="https://cdn.bootcss.com/jquery.serializeJSON/2.9.0/jquery.serializejson.js"></script>
+		<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<!--		JQuery-->
+		<script type="text/javascript" src="js/popper.min.js"></script>
+		<!--		日期组件-->
+		<script type="text/javascript" src="/laydate/laydate.js"></script>
+		<!-- 改成你的路径 -->
+		<script>
+			//执行一个laydate实例
+			laydate.render({
+				elem: '#dateFormat' ,
+				trigger:'click'//指定元素
+			});
+		</script>
+
+
+	<script>
+		$(function () {
+			$("#add").click(function () {
+				$.ajax({
+					type:"GET",
+					url:"/getDep",
+					success:function (data) {
+						$('#selectDep').html('');
+						$('#selectDep').append('<option>请选择</option>')
+						let departments = data;
+						let options = '';
+						for(let i=0;i<departments.length;i++){
+							options += '<option value="'+departments[i].id+'">'+departments[i].departmentName+'</option>'
+						}
+						$('#selectDep').append(options);
+
+					}
+				});
+			});
+
+			$("#addButton").click(function () {
+
+				// $("#addform").submit();
+				let data = $("#addform").serializeJSON();
+
+				//ajax提交表单
+				$.ajax({
+					type:'post',
+					url:"/add",
+					contentType: "application/json",
+					dataType:'JSON',
+					data:JSON.stringify(data),
+
+					//使用ajax提交 在controller方法中 return 字符串 thymeleaf不能匹配跳转了
+					success:function (data) {
+						if(data=="1"){
+							$("#myModal").modal("hide");
+							window.location.href="/emp"
+						}
+					}
+
+				})
+			})
+
+		});
+
+	</script>
+
+
 
 	</body>
 </html>

@@ -8,9 +8,7 @@ import com.zyfgoup.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.Date;
@@ -37,7 +35,7 @@ public class EmploeeController {
     }
 
     //to员工添加页面
-    @GetMapping("/add")
+    @GetMapping("/toadd")
     public String toAdd(Model model){
         //查出所有的部门，提供选择
         Collection<Department> departments = departmentService.selectAllDepartment();
@@ -47,12 +45,26 @@ public class EmploeeController {
 
     //员工添加功能，使用post接收
     @PostMapping("/add")
-    public String add(Employee employee){
+    //用ajax的JSON提交时 需要使用RequestBody  返回JSON数据ResponseBody
+    //只是提交表单的话 不需要
+    @ResponseBody
+    public String add(@RequestBody Employee employee){
+
+        System.out.println(employee);
 
         //保存员工信息
         employeeService.addEmployee(employee);
         //回到员工列表页面，可以使用redirect或者forward
-        return "redirect:/emp";
+        return "1";
+    }
+
+
+    //返回JSON  要用ResponseBody
+    @GetMapping("/getDep")
+    @ResponseBody
+    public List<Department> getDep(){
+        List<Department> departments = departmentService.selectAllDepartment();
+        return departments;
     }
 
     //to员工修改页面
