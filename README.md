@@ -1,4 +1,10 @@
-# springboot_CRUD
+#####父工程是简单的springboot项目  helloworld  整合了Swagger2
+#####handle-exception 是处理全局异常的demo
+
+
+
+
+####springboot_CRUD
 Springboot整合Mybaits、thymeleaf实现CRUD
 
 ```/*
