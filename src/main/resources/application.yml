@@ -1,0 +1,38 @@
+person:
+  name: zyf
+  age: 21
+  happy: false
+  birth: 1999-03-28
+
+
+dog:
+  name: 小白
+  age: 4
+
+
+#选择要激活那个环境块
+spring:
+  profiles:
+    active: dev
+
+---
+server:
+  port: 8080
+spring:
+  profiles: dev #配置环境的名称
+
+
+---
+
+server:
+  port: 8083
+spring:
+  profiles: test #配置环境的名称
+
+
+
+
+
+
+
+
