@@ -1,0 +1,7 @@
+server:
+  port: 8082
+logging:
+  file:
+    name: ./aop-demo/log/myApp.log
+  level:
+    root: info
