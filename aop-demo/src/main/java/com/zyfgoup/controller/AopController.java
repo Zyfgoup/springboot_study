@@ -1,7 +1,7 @@
 package com.zyfgoup.controller;
 
+import com.zyfgoup.entity.Animal;
 import com.zyfgoup.entity.Person;
-import io.swagger.models.auth.In;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +26,7 @@ public class AopController {
         System.out.println("我是controller层方法");
         Person p = new Person(str,age);
         Map<String, Person> res = new HashMap<>();
+        Animal animal = new Animal();
         res.put("zouyongfa",p);
         return res;
     }

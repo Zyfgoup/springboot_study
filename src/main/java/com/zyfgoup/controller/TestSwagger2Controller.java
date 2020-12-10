@@ -1,6 +1,5 @@
 package com.zyfgoup.controller;
 
-import com.zyfgoup.entity.Dog;
 import com.zyfgoup.entity.Person;
 import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
@@ -57,10 +56,4 @@ public class TestSwagger2Controller {
         return "success";
     }
 
-    @PostMapping("/person1")
-    public String add(@RequestBody  Map<String,Dog> map) {
-        System.out.println(map);
-
-        return "success";
-    }
 }

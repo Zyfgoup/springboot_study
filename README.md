@@ -1,7 +1,8 @@
 #### 外层的父工程是SpringBoot整合了swagger2
 启用只需要在启动类使用@EnableSwagger2
 然后编写配置类即可
-
+#### redis-demo
+整合redis 实现一个点赞的小demo  详情见模块内的readme
 
 #### handle-excepetion
 ErrorCode 错误码 通过枚举类来实现自定义错误码

@@ -6,6 +6,8 @@
     <modules>
         <module>handle-exception</module>
         <module>aop-demo</module>
+        <module>api</module>
+        <module>redis-demo</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -87,6 +89,12 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.Zyfgoup</groupId>
+            <artifactId>api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
 
     </dependencies>
