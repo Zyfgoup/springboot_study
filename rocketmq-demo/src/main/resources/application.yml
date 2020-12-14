@@ -1,0 +1,9 @@
+server:
+  port: 8084
+
+#nameServer
+rocketmq:
+  name-server: localhost:9876
+  #生产者组
+  producer:
+    group: user_producer_group
