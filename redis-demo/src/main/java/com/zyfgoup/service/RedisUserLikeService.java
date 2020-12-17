@@ -45,7 +45,7 @@ public interface RedisUserLikeService {
      *
      * @param likedUserId
      */
-    boolean incrLikedCount(String likedUserId) throws InterruptedException;
+    boolean incrLikedCount(String likedUserId);
 
 
     /**

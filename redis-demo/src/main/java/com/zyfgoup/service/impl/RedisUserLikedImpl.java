@@ -6,6 +6,7 @@ import com.zyfgoup.entity.dto.LikedCountDTO;
 import com.zyfgoup.service.RedisUserLikeService;
 import com.zyfgoup.utils.RedisKeyUtils;
 import com.zyfgoup.utils.enums.LikedStatusEnum;
+import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.data.MapEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.Cursor;
@@ -24,6 +25,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 @Service
+@Slf4j
 public class RedisUserLikedImpl implements RedisUserLikeService {
     public static final Long SUCCESS_RELEASE = 1L;
     @Autowired
@@ -93,20 +95,27 @@ public class RedisUserLikedImpl implements RedisUserLikeService {
      * @return
      */
     @Override
-    public boolean incrLikedCount(String likeUserId) throws InterruptedException {
+    public boolean incrLikedCount(String likeUserId){
         String requestId = UUID.randomUUID().toString();
         String lockKey = likeUserId+"+1";
         Boolean flag = redisTemplate.opsForValue().setIfAbsent(lockKey, requestId, 5, TimeUnit.SECONDS);
         if(flag) {
             redisTemplate.opsForHash().increment(RedisKeyUtils.MAP_KEY_USER_LIKED_COUNT, likeUserId, 1);
 
-            //lua脚本释放锁
-            String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
-            RedisScript of = RedisScript.of(script,Long.class);
-            Long res= (Long)redisTemplate.execute(of,Collections.singletonList(lockKey), requestId);
-            if(SUCCESS_RELEASE.equals(res))
-                return true;
-
+            new Thread(()->{
+                //lua脚本释放锁
+                String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+                RedisScript of = RedisScript.of(script,Long.class);
+                try {
+                    //3分钟
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Long res= (Long)redisTemplate.execute(of,Collections.singletonList(lockKey), requestId);
+                log.info("锁释放了");
+            }).start();
+           return true;
         }
         return false;
     }

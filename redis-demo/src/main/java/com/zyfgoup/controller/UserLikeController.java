@@ -42,17 +42,15 @@ public class UserLikeController {
      * @throws InterruptedException
      */
     @GetMapping("/test")
-    public void  test() throws InterruptedException {
+    public boolean  test() throws InterruptedException {
         ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor
                 (20, 40, 10L,
                         TimeUnit.SECONDS, new ArrayBlockingQueue<>(30)
                         , new NameThreadFactory());
 
-        for (int i = 0; i < 50; i++) {
-            threadPoolExecutor.execute(()->{
-                    redisUserLikeService.saveLiked2Redis("zouyongfa","xxx");
-            });
-        }
+
+        redisUserLikeService.saveLiked2Redis("zouyongfa","xxx");
+        return redisUserLikeService.incrLikedCount("zouyongfa");
 
     }
 

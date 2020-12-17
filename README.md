@@ -1,6 +1,11 @@
 #### 外层的父工程是SpringBoot整合了swagger2
 启用只需要在启动类使用@EnableSwagger2
 然后编写配置类即可
+#### rocketmq
+集成rocketmq-boot-starter 
+写了异步同步顺序延时消息发送的实现
+还写了了rocketmq处理分布式事务的实现
+
 #### redis-demo
 整合redis 实现一个点赞的小demo  详情见模块内的readme
 
