@@ -28,7 +28,12 @@ public class TestController {
 
     @GetMapping("/testRocketmq")
     public void testRocketmq(){
-        msgProducer.sendUserMsg(UserMsg.builder().userId(123456).address("shenzhen").age(22).name("zouyongfa").build());
+        for (int i = 0; i < 1000; i++) {
+            //msgProducer.sendUserMsg(UserMsg.builder().userId(10000+i).address("shenzhen").age(22).name("zouyongfa").build());
+
+            //批量测试
+            rocketMQTemplate.syncSend("testbatch",JSON.toJSONString(UserMsg.builder().userId(10000+i).address("shenzhen").age(22).name("zouyongfa").build()));
+        }
     }
 
     @GetMapping("/testAsync")

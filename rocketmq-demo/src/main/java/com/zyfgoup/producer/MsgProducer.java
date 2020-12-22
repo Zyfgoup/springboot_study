@@ -27,7 +27,7 @@ public class MsgProducer {
 
     public void sendUserMsg(UserMsg userMsg){
         SendResult test = rocketMQTemplate.syncSend("test", JSON.toJSON(userMsg),2000);
-        System.out.println(test.getMsgId()+"::"+test.getSendStatus());
+        //System.out.println(test.getMsgId()+"::"+test.getSendStatus());
     }
 
 
